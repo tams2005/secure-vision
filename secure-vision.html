@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure Vision – AI-Powered Home Security</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap">
+  <style>
+    :root {
+      --primary: #1a2236;
+      --accent: #4f8cff;
+      --bg: #181c28;
+      --text: #f1f1f1;
+      --card: #232946;
+      --success: #38d39f;
+      --danger: #ff5c5c;
+      --shadow: 0 2px 16px rgba(0,0,0,0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      background: var(--primary);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--accent);
+    }
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    nav button {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    nav button.active, nav button:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 1rem;
+      transition: all 0.3s;
+    }
+    section {
+      display: none;
+      animation: fadeIn 0.6s;
+    }
+    section.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+
+    /* Home */
+    .home-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--accent);
+      text-align: center;
+    }
+    .home-intro {
+      font-size: 1.15rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-img {
+      display: block;
+      margin: 2rem auto;
+      width: 100%;
+      max-width: 350px;
+      height: 180px;
+      background: linear-gradient(135deg, #4f8cff77 0%, #38d39f55 100%);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      background-image: url('https://img.icons8.com/ios-filled/200/4f8cff/security-camera.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 120px;
+    }
+
+    /* Product Details */
+    .features-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .feature-card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      flex: 1 1 200px;
+      max-width: 220px;
+      min-width: 180px;
+      padding: 2rem 1rem 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-6px) scale(1.03);
+    }
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.8rem;
+    }
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+      text-align: center;
+    }
+    .feature-desc {
+      font-size: 0.98rem;
+      text-align: center;
+      color: #c2c8d6;
+    }
+
+    /* Payment */
+    .payment-form {
+      background: var(--card);
+      max-width: 400px;
+      margin: 2rem auto;
+      padding: 2rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .payment-form label {
+      font-size: 1rem;
+      margin-bottom: 0.3rem;
+      color: var(--accent);
+    }
+    .payment-form input {
+      background: #22263a;
+      border: 1px solid #333a56;
+      color: var(--text);
+      border-radius: 6px;
+      padding: 0.7rem;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .payment-form input:focus {
+      border: 1.5px solid var(--accent);
+    }
+    .payment-form button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.8rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .payment-form button:active {
+      background: #3666b5;
+    }
+    .payment-message {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--success);
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: none;
+    }
+    .payment-message.active {
+      display: block;
+    }
+    .pay-note {
+      text-align: center;
+      color: #c2c8d6;
+      font-size: 0.97rem;
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Contact */
+    .contact-info {
+      background: linear-gradient(90deg, #232946 70%, #4f8cff22 100%);
+      padding: 1.5rem 1rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      align-items: flex-start;
+      max-width: 400px;
+    }
+    .contact-info span {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.05rem;
+    }
+    .contact-form {
+      background: var(--card);
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .contact-form textarea {
+      background: #22263a;
+      border: 1px solid #333a56;
+      color: var(--text);
+      border-radius: 6px;
+      padding: 0.7rem;
+      font-size: 1rem;
+      min-height: 100px;
+      resize: vertical;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .contact-form textarea:focus {
+      border: 1.5px solid var(--accent);
+    }
+    .contact-form button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.8rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .contact-form button:active {
+      background: #3666b5;
+    }
+    .contact-message {
+      text-align: center;
+      margin-top: 1.2rem;
+      color: var(--success);
+      font-size: 1.05rem;
+      font-weight: 600;
+      display: none;
+    }
+    .contact-message.active {
+      display: block;
+    }
+    .contact-banner {
+      width: 100%;
+      max-width: 700px;
+      height: 120px;
+      background: linear-gradient(120deg, #4f8cff33 0%, #38d39f22 100%);
+      border-radius: 14px;
+      margin: 0 auto 2rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url('https://img.icons8.com/ios-filled/100/4f8cff/security-checked.png');
+      background-repeat: no-repeat;
+      background-position: right 30px center;
+      background-size: 90px;
+    }
+    .contact-banner-text {
+      font-size: 1.3rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-left: 1.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      main { padding: 0.5rem; }
+      .nav { padding: 1rem; }
+    }
+    @media (max-width: 700px) {
+      .features-grid { flex-direction: column; gap: 1.2rem;}
+      .contact-banner { height: 90px; background-size: 60px;}
+      .contact-banner-text { font-size: 1.1rem;}
+    }
+    @media (max-width: 500px) {
+      .nav { flex-direction: column; gap: 0.5rem;}
+      .logo { font-size: 1.1rem;}
+      .home-title { font-size: 1.3rem;}
+      .feature-card { padding: 1.2rem 0.7rem;}
+      .payment-form, .contact-form, .contact-info { padding: 1rem;}
+      .contact-banner { height: 60px; background-size: 40px;}
+      main { margin: 0.5rem 0;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <span class="logo">Secure Vision</span>
+      <nav>
+        <button id="nav-home" class="active">Home</button>
+        <button id="nav-product">Product Details</button>
+        <button id="nav-payment">Payment</button>
+        <button id="nav-contact">Contact</button>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <!-- Home Page -->
+    <section id="home" class="active">
+      <h1 class="home-title">Secure Vision – AI-Powered Home Security</h1>
+      <p class="home-intro">
+        Secure Vision provides intelligent CCTV surveillance integrated with AI face recognition. It alerts users when an unknown face is detected in real-time.
+      </p>
+      <div class="hero-img" aria-label="AI-powered CCTV illustration"></div>
+    </section>
+
+    <!-- Product Details -->
+    <section id="product">
+      <h2 class="home-title" style="font-size:1.5rem;">Product Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon" aria-label="Face recognition">
+            <img src="https://img.icons8.com/ios-filled/48/4f8cff/face-recognition.png" alt="" width="38" height="38">
+          </span>
+          <div class="feature-title">AI-based Face Recognition</div>
+          <div class="feature-desc">Advanced AI algorithms identify and verify faces with high accuracy.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon" aria-label="Intruder alert">
+            <img src="https://img.icons8.com/ios-filled/48/4f8cff/alarm.png" alt="" width="38" height="38">
+          </span>
+          <div class="feature-title">Real-time Intruder Alerts</div>
+          <div class="feature-desc">Get instant notifications when unknown faces are detected by your cameras.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon" aria-label="Image storage">
+            <img src="https://img.icons8.com/ios-filled/48/4f8cff/image.png" alt="" width="38" height="38">
+          </span>
+          <div class="feature-title">Image Storage of Visitors</div>
+          <div class="feature-desc">Automatically stores images of all visitors for future reference and review.</div>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon" aria-label="User interface">
+            <img src="https://img.icons8.com/ios-filled/48/4f8cff/touchscreen-smartphone.png" alt="" width="38" height="38">
+          </span>
+          <div class="feature-title">User-Friendly Interface</div>
+          <div class="feature-desc">Simple, intuitive dashboard for easy monitoring and management.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment Section -->
+    <section id="payment">
+      <h2 class="home-title" style="font-size:1.5rem;">Activate Secure Vision</h2>
+      <div class="pay-note">Pay securely to activate your access to Secure Vision software.</div>
+      <form class="payment-form" id="paymentForm" autocomplete="off">
+        <div>
+          <label for="pay-name">Name</label>
+          <input type="text" id="pay-name" name="pay-name" required placeholder="Your Name">
+        </div>
+        <div>
+          <label for="pay-card">Card Number</label>
+          <input type="text" id="pay-card" name="pay-card" required maxlength="19" pattern="\d{16,19}" placeholder="1234 5678 9012 3456">
+        </div>
+        <button type="submit">Pay Now</button>
+        <div class="payment-message" id="paymentMessage">Thank you! Your payment was successful.<br>Access to Secure Vision is now activated.</div>
+      </form>
+    </section>
+
+    <!-- Contact Page -->
+    <section id="contact">
+      <div class="contact-banner">
+        <span class="contact-banner-text">
+          Need help? Our support team is here for you.
+        </span>
+      </div>
+      <div class="contact-info">
+        <span><img src="https://img.icons8.com/ios-filled/20/4f8cff/new-post.png" alt=""> Email: <a href="mailto:support@securevision.com" style="color:var(--accent);text-decoration:none;">support@securevision.com</a></span>
+        <span><img src="https://img.icons8.com/ios-filled/20/4f8cff/phone.png" alt=""> Phone: <a href="tel:+911234567890" style="color:var(--accent);text-decoration:none;">+91-1234567890</a></span>
+      </div>
+      <form class="contact-form" id="contactForm" autocomplete="off">
+        <label for="contact-message">Your Message</label>
+        <textarea id="contact-message" name="contact-message" required placeholder="Type your message here..."></textarea>
+        <button type="submit">Send</button>
+        <div class="contact-message" id="contactMsg">Thank you for contacting us! We'll respond soon.</div>
+      </form>
+    </section>
+  </main>
+  <script>
+    // Navigation logic
+    const navButtons = [
+      { id: 'nav-home', section: 'home' },
+      { id: 'nav-product', section: 'product' },
+      { id: 'nav-payment', section: 'payment' },
+      { id: 'nav-contact', section: 'contact' }
+    ];
+    navButtons.forEach(btn => {
+      document.getElementById(btn.id).addEventListener('click', function() {
+        navButtons.forEach(b => {
+          document.getElementById('nav-' + b.section).classList.remove('active');
+          document.getElementById(b.section).classList.remove('active');
+        });
+        this.classList.add('active');
+        document.getElementById(btn.section).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    // Payment mockup
+    document.getElementById('paymentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('paymentMessage').classList.add('active');
+      setTimeout(() => {
+        document.getElementById('paymentForm').reset();
+      }, 1500);
+    });
+
+    // Contact form mockup
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('contactMsg').classList.add('active');
+      setTimeout(() => {
+        document.getElementById('contactForm').reset();
+        document.getElementById('contactMsg').classList.remove('active');
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
